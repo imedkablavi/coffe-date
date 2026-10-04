@@ -503,6 +503,9 @@ h1 em {
     left .16s cubic-bezier(.2,.8,.25,1),
     top .16s cubic-bezier(.2,.8,.25,1),
     transform .16s ease;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
   z-index: 5;
 }
 
