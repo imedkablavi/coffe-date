@@ -32,7 +32,9 @@ function randomPosition() {
   const buttonRect = noBtn.getBoundingClientRect();
 
   const maxX = Math.max(6, areaRect.width - buttonRect.width - 6);
-  const maxY = Math.max(6, areaRect.height - buttonRect.height - 6);
+  // Keep a clear strip at the bottom for the playful message.
+  const messageSafeSpace = Math.min(42, areaRect.height * 0.3);
+  const maxY = Math.max(6, areaRect.height - buttonRect.height - messageSafeSpace - 6);
 
   const acceptRect = acceptBtn.getBoundingClientRect();
   const accept = {
