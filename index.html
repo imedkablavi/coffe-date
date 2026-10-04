@@ -3,80 +3,123 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#f4ddd0">
-  <meta name="description" content="A tiny coffee question made with love.">
-  <title>فنجان قهوة؟ ☕</title>
+  <meta name="theme-color" content="#f5e7df">
+  <meta name="description" content="عندي سؤال صغير... ☕">
+  <title>عندي سؤال صغير ☕</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="page-shell">
-    <div class="glow glow-one"></div>
-    <div class="glow glow-two"></div>
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="grain" aria-hidden="true"></div>
 
-    <section class="hero" aria-labelledby="title">
-      <div class="hero-copy">
-        <div class="coffee-mark" aria-hidden="true">☕</div>
-        <p class="eyebrow">سؤال صغير... وإجابته تفرق كثير 🤍</p>
-        <h1 id="title">فنجان قهوة<br><span>معي؟</span></h1>
-        <p class="subtitle">قهوة هادئة، حكي حلو، ووقت لطيف بعيد عن كل الضجة.</p>
+  <main class="page">
+    <header class="topbar">
+      <div class="mini-brand" aria-hidden="true">
+        <span class="mini-cup">☕</span>
+        <span>لحظة حلوة</span>
+      </div>
+      <div class="top-heart" aria-hidden="true">♡</div>
+    </header>
 
-        <div class="note">
-          <span class="note-pin">♡</span>
-          <span>ملاحظة مهمة: ما في ضغط... بس في زر هروب مشاغب 😂</span>
+    <section class="invite" aria-labelledby="title">
+      <div class="invite-copy">
+        <div class="eyebrow">
+          <span class="eyebrow-line"></span>
+          عندي سؤال صغير
+          <span class="eyebrow-line"></span>
+        </div>
+
+        <h1 id="title">
+          شو رأيك
+          <em>بفنجان قهوة</em>
+          معي؟
+        </h1>
+
+        <p class="lead">
+          مو لازم مناسبة، ولا قصة كبيرة...
+          بس قهوة، شوية حكي، ووقت حلو سوا. 🤍
+        </p>
+
+        <div class="little-note">
+          <span class="note-mark">“</span>
+          <p>القهوة بتكون أطيب لما تكون الصحبة حلوة.</p>
+          <span class="note-mark">”</span>
         </div>
       </div>
 
-      <div class="proposal-card" id="proposalCard">
-        <div class="card-top">
-          <span class="tiny-label">COFFEE DATE</span>
-          <span class="tiny-heart">♥</span>
-        </div>
+      <div class="invite-visual" aria-hidden="true">
+        <div class="blob blob-back"></div>
+        <div class="blob blob-front"></div>
 
-        <div class="question">
-          <span class="question-icon" aria-hidden="true">☕</span>
-          <h2>شو رأيك نشرب فنجان قهوة سوا؟</h2>
-          <p>وعد... القهوة عليّ، والحكي علينا الاثنين. ☺️</p>
-        </div>
-
-        <div class="choice-area" id="choiceArea">
-          <button class="accept-btn" id="acceptBtn" type="button">
-            <span>أقبل</span>
-            <span aria-hidden="true">☕</span>
-            <span aria-hidden="true">♥</span>
-          </button>
-
-          <button class="no-btn" id="noBtn" type="button" aria-label="لا">
-            لا 😏
-          </button>
-
-          <p class="tease" id="tease" aria-live="polite"></p>
-        </div>
-
-        <div class="success hidden" id="success">
-          <div class="success-cup">☕</div>
-          <div class="confetti" aria-hidden="true">
-            <span>♥</span><span>✦</span><span>♡</span><span>✿</span><span>♥</span><span>✧</span>
+        <div class="table">
+          <div class="flower vase">
+            <div class="stem s1"></div><div class="stem s2"></div><div class="stem s3"></div>
+            <div class="flower f1">✿</div><div class="flower f2">✿</div><div class="flower f3">✿</div>
+            <div class="vase-glass"></div>
           </div>
-          <h3>يييي! 🤍</h3>
-          <p>أحلى جواب ممكن يوصلني اليوم.</p>
-          <p class="success-small">رح يوصلي إشعار القبول فورًا ☕✨</p>
-        </div>
 
-        <div class="footer-line">
-          <span>Good coffee.</span>
-          <span>Better conversation.</span>
+          <div class="cup-wrap">
+            <div class="steam steam-1"></div>
+            <div class="steam steam-2"></div>
+            <div class="steam steam-3"></div>
+            <div class="cup">
+              <div class="coffee"></div>
+              <div class="latte-heart">♡</div>
+              <div class="cup-handle"></div>
+            </div>
+            <div class="saucer"></div>
+          </div>
+
+          <div class="paper">
+            <span>coffee?</span>
+            <small>♡</small>
+          </div>
         </div>
       </div>
     </section>
 
+    <section class="question-card" aria-labelledby="question-title">
+      <div class="card-decoration left" aria-hidden="true">✦</div>
+      <div class="card-decoration right" aria-hidden="true">♡</div>
+
+      <div class="card-content">
+        <span class="card-kicker">فنجان & حكي</span>
+        <h2 id="question-title">بتقبلي؟ 🤍</h2>
+        <p>اختاري جوابك... وأنا بوعدك ما أزعل 😌</p>
+
+        <div class="choices" id="choiceArea">
+          <button class="accept-btn" id="acceptBtn" type="button">
+            <span>أكيد أقبل</span>
+            <span aria-hidden="true">☕</span>
+          </button>
+
+          <button class="no-btn" id="noBtn" type="button" aria-label="لا">
+            لا 🙈
+          </button>
+
+          <p class="tease" id="tease" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="success hidden" id="success" role="status" aria-live="polite">
+        <div class="success-halo"></div>
+        <div class="success-icon" aria-hidden="true">☕</div>
+        <span class="success-kicker">يا سلام</span>
+        <h3>هيك الحكي 🤍</h3>
+        <p>خلاص... اتفقنا على القهوة.</p>
+        <p class="success-last">اختيار حلو، ما رح نندم عليه. ☺️</p>
+        <div class="success-hearts" aria-hidden="true">♡ ♥ ♡</div>
+      </div>
+    </section>
+
     <footer class="footer">
-      <span>☕ قهوة</span>
-      <span>♡ ضحكة</span>
-      <span>✦ حكي</span>
-      <span>∞ وقت حلو</span>
+      <span>قهوة ☕</span>
+      <span>ضحكة ♡</span>
+      <span>وحكي من القلب</span>
     </footer>
   </main>
 
