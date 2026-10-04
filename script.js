@@ -30,13 +30,12 @@ function showToast(message) {
 function randomPosition() {
   const areaRect = choiceArea.getBoundingClientRect();
   const buttonRect = noBtn.getBoundingClientRect();
+  const acceptRect = acceptBtn.getBoundingClientRect();
 
   const maxX = Math.max(6, areaRect.width - buttonRect.width - 6);
-  // Keep a clear strip at the bottom for the playful message.
-  const messageSafeSpace = Math.min(42, areaRect.height * 0.3);
+  const messageSafeSpace = Math.min(46, areaRect.height * 0.28);
   const maxY = Math.max(6, areaRect.height - buttonRect.height - messageSafeSpace - 6);
 
-  const acceptRect = acceptBtn.getBoundingClientRect();
   const accept = {
     left: acceptRect.left - areaRect.left,
     top: acceptRect.top - areaRect.top,
@@ -44,9 +43,13 @@ function randomPosition() {
     bottom: acceptRect.bottom - areaRect.top
   };
 
-  for (let i = 0; i < 30; i += 1) {
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+  // Keep the escaping button well away from the accept button.
+  const padding = 20;
+
+  for (let i = 0; i < 80; i += 1) {
+    const x = 6 + Math.random() * Math.max(0, maxX - 6);
+    const y = 6 + Math.random() * Math.max(0, maxY - 6);
+
     const candidate = {
       left: x,
       top: y,
@@ -54,19 +57,22 @@ function randomPosition() {
       bottom: y + buttonRect.height
     };
 
-    const safe = (
-      candidate.right < accept.left - 15 ||
-      candidate.left > accept.right + 15 ||
-      candidate.bottom < accept.top - 15 ||
-      candidate.top > accept.bottom + 15
+    const overlapsAccept = !(
+      candidate.right < accept.left - padding ||
+      candidate.left > accept.right + padding ||
+      candidate.bottom < accept.top - padding ||
+      candidate.top > accept.bottom + padding
     );
 
-    if (safe) return { x, y };
+    if (!overlapsAccept) {
+      return { x, y };
+    }
   }
 
+  // Deterministic fallback: put it in the lower-left safe zone.
   return {
-    x: Math.max(6, maxX * 0.66),
-    y: Math.max(6, maxY * 0.55)
+    x: 6,
+    y: Math.max(6, maxY)
   };
 }
 
