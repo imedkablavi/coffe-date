@@ -11,14 +11,18 @@ const teaseMessages = [
   "😂 لا، هاد الزر عم يهرب منك.",
   "قريبة... بس مو كفاية 😏",
   "واضح إن كلمة «لا» مستحية اليوم 🙈",
-  "عم جرّب ساعدك... بس الزر مش متعاون 😂",
-  "خلص، شكله ما بده ينكبس.",
-  "يمكن «أكيد أقبل» أسهل شوي؟ ☕"
+  "يعني معقول كل هاد الهروب من فنجان قهوة؟ 😂",
+  "خلص عاد... أعطيني فرصة ☕",
+  "حرام عليكي 😭 أقبلي خلينا نطلع!",
+  "والله القهوة ما رح تضر 😂🤍",
+  "آخر محاولة؟ ولا بدنا نكمل هاللعبة؟ 😌"
 ];
 
 let attempts = 0;
 let toastTimer;
 let lastEscapeAt = 0;
+let pageOpenedAt = performance.now();
+let inactivityTimer;
 
 function showToast(message) {
   toast.textContent = message;
@@ -76,6 +80,18 @@ function randomPosition() {
   };
 }
 
+function getMessage() {
+  const elapsed = performance.now() - pageOpenedAt;
+
+  if (elapsed >= 10000 && attempts >= 3) {
+    return attempts >= 6
+      ? "حرام عليكي 😂 أقبلي بقى، خلينا نشرب هالقهوة سوا 🤍"
+      : "أكثر من 10 ثواني ولسا عم تحاولي بـ«لا»؟ 😭";
+  }
+
+  return teaseMessages[Math.min(attempts, teaseMessages.length - 1)];
+}
+
 function escapeNoButton() {
   const now = performance.now();
   if (now - lastEscapeAt < 120) return;
@@ -88,10 +104,21 @@ function escapeNoButton() {
   noBtn.style.top = `${y}px`;
   noBtn.style.transform = "none";
 
-  tease.textContent = teaseMessages[Math.min(attempts, teaseMessages.length - 1)];
+  tease.textContent = getMessage();
   tease.classList.add("show");
   attempts += 1;
 }
+
+function refreshTeaseAfterTenSeconds() {
+  const elapsed = performance.now() - pageOpenedAt;
+
+  if (elapsed >= 10000 && attempts >= 3) {
+    tease.textContent = getMessage();
+    tease.classList.add("show");
+  }
+}
+
+setTimeout(refreshTeaseAfterTenSeconds, 10000);
 
 noBtn.addEventListener("pointerenter", (event) => {
   if (event.pointerType === "mouse") {
