@@ -472,8 +472,9 @@ h1 em {
 }
 
 .accept-btn {
-  right: 50%;
-  transform: translateX(8px);
+  left: calc(50% - 8px);
+  right: auto;
+  transform: translateX(-100%);
   width: 205px;
   color: #fff;
   background: linear-gradient(135deg, #da5b70, #ee7b89);
@@ -488,12 +489,12 @@ h1 em {
 
 .accept-btn:hover,
 .accept-btn:focus-visible {
-  transform: translateX(8px) translateY(-3px);
+  transform: translateX(-100%) translateY(-3px);
   box-shadow: 0 22px 40px rgba(211,83,103,.34);
 }
 
 .no-btn {
-  left: 50%;
+  left: calc(50% + 8px);
   width: 150px;
   color: var(--ink);
   background: rgba(255,255,255,.67);
@@ -791,20 +792,21 @@ h1 em {
   }
 
   .accept-btn {
-    right: 50%;
-    top: 12px;
+    left: 50%;
+    right: auto;
+    top: 10px;
     width: 200px;
-    transform: translateX(50%);
+    transform: translateX(-50%);
   }
 
   .accept-btn:hover,
   .accept-btn:focus-visible {
-    transform: translateX(50%) translateY(-3px);
+    transform: translateX(-50%) translateY(-3px);
   }
 
   .no-btn {
     left: 50%;
-    top: 78px;
+    top: 82px;
     width: 145px;
     height: 53px;
     transform: translateX(-50%);
