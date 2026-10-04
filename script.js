@@ -1,4 +1,4 @@
-const ENDPOINT = ""; // Add your deployed HTTPS endpoint here to receive email notifications.
+const ENDPOINT = "";
 
 const noBtn = document.getElementById("noBtn");
 const acceptBtn = document.getElementById("acceptBtn");
@@ -8,144 +8,126 @@ const success = document.getElementById("success");
 const toast = document.getElementById("toast");
 
 const teaseMessages = [
-  "😂 لا لا... هاد الزر سريع شوي!",
-  "حاولي مرة تانية 😏☕",
-  "أوف... قريبة! بس لا 😂",
-  "ليش عم تهربي من القهوة؟ 🤍",
-  "شكلي مضطر أخليها أصعب 😌",
-  "آخر فرصة... أو يمكن لا 😂"
+  "😂 لا، هاد الزر عم يهرب منك.",
+  "قريبة... بس مو كفاية 😏",
+  "واضح إن كلمة «لا» مستحية اليوم 🙈",
+  "عم جرّب ساعدك... بس الزر مش متعاون 😂",
+  "خلص، شكله ما بده ينكبس.",
+  "يمكن «أكيد أقبل» أسهل شوي؟ ☕"
 ];
 
-let noAttempts = 0;
-let touchMode = false;
+let attempts = 0;
+let toastTimer;
 
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add("show");
-  window.clearTimeout(showToast.timer);
-  showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 2200);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
 }
 
-function getSafePosition() {
-  const area = choiceArea.getBoundingClientRect();
-  const button = noBtn.getBoundingClientRect();
+function randomPosition() {
+  const areaRect = choiceArea.getBoundingClientRect();
+  const buttonRect = noBtn.getBoundingClientRect();
 
-  const maxX = Math.max(8, area.width - button.width - 8);
-  const maxY = Math.max(8, area.height - button.height - 8);
+  const maxX = Math.max(6, areaRect.width - buttonRect.width - 6);
+  const maxY = Math.max(6, areaRect.height - buttonRect.height - 6);
 
-  let x = Math.random() * maxX;
-  let y = Math.random() * maxY;
-
-  // Keep the escape button away from the accept button.
   const acceptRect = acceptBtn.getBoundingClientRect();
-  const localAccept = {
-    left: acceptRect.left - area.left,
-    top: acceptRect.top - area.top,
-    right: acceptRect.right - area.left,
-    bottom: acceptRect.bottom - area.top
+  const accept = {
+    left: acceptRect.left - areaRect.left,
+    top: acceptRect.top - areaRect.top,
+    right: acceptRect.right - areaRect.left,
+    bottom: acceptRect.bottom - areaRect.top
   };
 
-  for (let i = 0; i < 20; i++) {
-    const candidate = { left: x, top: y, right: x + button.width, bottom: y + button.height };
-    const overlap = !(
-      candidate.right + 18 < localAccept.left ||
-      candidate.left - 18 > localAccept.right ||
-      candidate.bottom + 18 < localAccept.top ||
-      candidate.top - 18 > localAccept.bottom
+  for (let i = 0; i < 30; i += 1) {
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+    const candidate = {
+      left: x,
+      top: y,
+      right: x + buttonRect.width,
+      bottom: y + buttonRect.height
+    };
+
+    const safe = (
+      candidate.right < accept.left - 15 ||
+      candidate.left > accept.right + 15 ||
+      candidate.bottom < accept.top - 15 ||
+      candidate.top > accept.bottom + 15
     );
 
-    if (!overlap) break;
-
-    x = Math.random() * maxX;
-    y = Math.random() * maxY;
+    if (safe) return { x, y };
   }
 
-  return { x, y };
+  return {
+    x: Math.max(6, maxX * 0.66),
+    y: Math.max(6, maxY * 0.55)
+  };
 }
 
-function moveNoButton() {
-  const { x, y } = getSafePosition();
+function escapeNoButton() {
+  const { x, y } = randomPosition();
+
   noBtn.classList.add("running");
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
   noBtn.style.transform = "none";
 
-  tease.textContent = teaseMessages[Math.min(noAttempts, teaseMessages.length - 1)];
+  tease.textContent = teaseMessages[Math.min(attempts, teaseMessages.length - 1)];
   tease.classList.add("show");
-  noAttempts += 1;
+  attempts += 1;
 }
 
-function resetNoButton() {
-  noBtn.classList.remove("running");
-  noBtn.style.left = "";
-  noBtn.style.top = "";
-  noBtn.style.transform = "";
-  tease.classList.remove("show");
-}
-
-function pointerNearNoButton(event) {
-  if (event.pointerType === "touch") {
-    touchMode = true;
-    return;
+noBtn.addEventListener("pointerenter", (event) => {
+  if (event.pointerType !== "touch") {
+    escapeNoButton();
   }
-
-  if (!noBtn.matches(":hover")) return;
-  moveNoButton();
-}
-
-noBtn.addEventListener("pointerenter", pointerNearNoButton);
-
-noBtn.addEventListener("touchstart", (event) => {
-  event.preventDefault();
-  touchMode = true;
-  moveNoButton();
-}, { passive: false });
-
-noBtn.addEventListener("focus", () => {
-  if (touchMode) moveNoButton();
 });
 
 noBtn.addEventListener("click", (event) => {
   event.preventDefault();
-  moveNoButton();
+  escapeNoButton();
+});
+
+noBtn.addEventListener("touchstart", (event) => {
+  event.preventDefault();
+  escapeNoButton();
+}, { passive: false });
+
+noBtn.addEventListener("focus", () => {
+  escapeNoButton();
 });
 
 acceptBtn.addEventListener("click", async () => {
   acceptBtn.disabled = true;
   noBtn.disabled = true;
-
   success.classList.remove("hidden");
 
-  const payload = {
-    event: "coffee_date_accepted",
-    acceptedAt: new Date().toISOString(),
-    userAgent: navigator.userAgent
-  };
-
-  if (!ENDPOINT) {
-    showToast("تم تسجيل القبول محليًا — اربط ENDPOINT ليصلك الإيميل 🤍");
-    return;
-  }
+  if (!ENDPOINT) return;
 
   try {
     const response = await fetch(ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        event: "coffee_date_accepted",
+        acceptedAt: new Date().toISOString()
+      }),
       keepalive: true
     });
 
-    if (!response.ok) throw new Error("Notification request failed");
-    showToast("وصلتك الرسالة... وتم إبلاغ صاحب القهوة ☕🤍");
+    if (!response.ok) throw new Error("Request failed");
   } catch (error) {
     console.error(error);
-    showToast("تم القبول 🤍 لكن تعذر إرسال الإشعار الآن.");
+    showToast("صار في مشكلة صغيرة، بس الجواب وصل 🤍");
   }
 });
 
 window.addEventListener("resize", () => {
   if (!noBtn.classList.contains("running")) return;
-  const { x, y } = getSafePosition();
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
+  const { x, y } = randomPosition();
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
 });
