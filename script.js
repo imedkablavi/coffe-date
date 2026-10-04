@@ -22,7 +22,6 @@ let attempts = 0;
 let toastTimer;
 let lastEscapeAt = 0;
 let pageOpenedAt = performance.now();
-let inactivityTimer;
 
 function showToast(message) {
   toast.textContent = message;
@@ -83,7 +82,7 @@ function randomPosition() {
 function getMessage() {
   const elapsed = performance.now() - pageOpenedAt;
 
-  if (elapsed >= 10000 && attempts >= 3) {
+  if (elapsed >= 10000 && attempts >= 2) {
     return attempts >= 6
       ? "حرام عليكي 😂 أقبلي بقى، خلينا نشرب هالقهوة سوا 🤍"
       : "أكثر من 10 ثواني ولسا عم تحاولي بـ«لا»؟ 😭";
