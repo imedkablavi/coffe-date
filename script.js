@@ -18,6 +18,7 @@ const teaseMessages = [
 
 let attempts = 0;
 let toastTimer;
+let lastEscapeAt = 0;
 
 function showToast(message) {
   toast.textContent = message;
@@ -68,6 +69,10 @@ function randomPosition() {
 }
 
 function escapeNoButton() {
+  const now = performance.now();
+  if (now - lastEscapeAt < 120) return;
+  lastEscapeAt = now;
+
   const { x, y } = randomPosition();
 
   noBtn.classList.add("running");
@@ -81,20 +86,31 @@ function escapeNoButton() {
 }
 
 noBtn.addEventListener("pointerenter", (event) => {
-  if (event.pointerType !== "touch") {
+  if (event.pointerType === "mouse") {
     escapeNoButton();
   }
 });
 
-noBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-  escapeNoButton();
+noBtn.addEventListener("pointerdown", (event) => {
+  if (event.pointerType === "touch" || event.pointerType === "pen") {
+    event.preventDefault();
+    escapeNoButton();
+  }
 });
 
 noBtn.addEventListener("touchstart", (event) => {
   event.preventDefault();
   escapeNoButton();
 }, { passive: false });
+
+noBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  // Mobile browsers may still synthesize a click after a touch.
+  // The button must never become clickable.
+  if (performance.now() - lastEscapeAt > 180) {
+    escapeNoButton();
+  }
+});
 
 noBtn.addEventListener("focus", () => {
   escapeNoButton();
